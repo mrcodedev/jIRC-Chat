@@ -3,7 +3,6 @@ import React from "react"
 import FormChat from "../FormChat/FormChat"
 
 function App(props) {
-  const b = "holi"
   const connectServer = (dataConnection) => {
     const connection = new WebSocket("ws://localhost:8080")
 

@@ -24,8 +24,7 @@
     "eslint-plugin-react": "^7.23.1",
     "husky": "^5.2.0",
     "lint-staged": "^10.5.4",
-    "prettier": "^2.2.1",
-    "simple-git-hooks": ">=2.0.3"
+    "prettier": "^2.2.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -34,7 +33,9 @@
     "eject": "react-scripts eject",
     "start:m1": "FAST_REFRESH=false yarn start",
     "server:start": "node ./server/server.js",
-    "lint": "eslint . --fix"
+    "lint": "eslint . --fix",
+    "prepare": "husky install",
+    "pre-commit": "echo \"🐕 [Husky] doing pre-commit...\" && lint-staged"
   },
   "eslintConfig": {
     "extends": [
@@ -53,11 +54,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   },
   "lint-staged": {
     "*.js": "eslint --cache --fix",
