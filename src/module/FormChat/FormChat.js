@@ -18,13 +18,14 @@ class FormChat extends React.Component {
 
     const timeElapsed = Date.now()
     const now = new Date(timeElapsed)
-
-    //See how pass child to parent info, to do the connection 
-    this.props.onDataConnect = { 
-      nickName: this.state.nick, 
-      channelName: this.state.channel,
-      date: now.toUTCString()
-    }
+    
+    this.props.setDataConnection({
+      data: {
+        nickName: this.state.nick, 
+        channelName: this.state.channel,
+        dateConnection: now.toUTCString()
+      }
+    })
   }
 
   render() {

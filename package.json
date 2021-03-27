@@ -19,7 +19,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "start:m1": "FAST_REFRESH=false yarn start"
+    "start:m1": "FAST_REFRESH=false yarn start",
+    "server:start": "node ./server/server.js"
+
   },
   "eslintConfig": {
     "extends": [
