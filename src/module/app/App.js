@@ -1,12 +1,11 @@
-import './App.scss';
-import React from 'react';
-import FormChat from '../FormChat/FormChat'
+import "./App.scss"
+import React from "react"
+import FormChat from "../FormChat/FormChat"
 
 function App(props) {
   const connectServer = (dataConnection) => {
-    
-    const connection = new WebSocket("ws://localhost:8080");
-    
+    const connection = new WebSocket("ws://localhost:8080")
+
     connection.onopen = (event) => {
       console.log("WebSocket is open now!")
     }
@@ -24,7 +23,7 @@ function App(props) {
     <React.Fragment>
       <FormChat setDataConnection={connectServer}></FormChat>
     </React.Fragment>
-  );
+  )
 }
 
-export default App;
+export default App
