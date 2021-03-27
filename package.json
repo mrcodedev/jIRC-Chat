@@ -54,16 +54,13 @@
       "last 1 safari version"
     ]
   },
-  "simple-git-hooks": {
-    "pre-commit": "npx lint-staged"
-  },
-  "lint-staged": {
-    "*.js": "eslint --cache --fix",
-    "*.{js,css,md}": "prettier --write"
-  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix",
+    "*.{js,css,md}": "prettier --write"
   }
 }
