@@ -25,14 +25,11 @@ class FormChat extends React.Component {
     const timeElapsed = Date.now()
     const now = new Date(timeElapsed)
 
-    this.props.dataUser = { 
+    this.props.onDataConnect = { 
       nickName: this.state.nick, 
       channelName: this.state.channel,
       date: now.toUTCString()
     }
-
-
-
   }
 
   render() {
