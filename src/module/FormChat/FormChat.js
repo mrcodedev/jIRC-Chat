@@ -1,57 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-class FormChat extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      nick: "",
-      channel: ""
-    }
-  }
-
-  handleSubmit(event) {
+function FormChat(props) {
+  const [nick, setNick] = useState("")
+  const [channel, setChannel] = useState("")
+  
+  const handleSubmit = (event) => {
     event.preventDefault();
-    if(!this.state.nick) {
+
+    if(!nick) {
       //In future popup of error :D
-      return alert("Name can't be empty");
+      return console.log("Name can't be empty");
     }
 
     const timeElapsed = Date.now()
     const now = new Date(timeElapsed)
     
-    this.props.setDataConnection({
+    props.setDataConnection({
       data: {
-        nickName: this.state.nick, 
-        channelName: this.state.channel,
+        nickName: nick, 
+        channelName: channel,
         dateConnection: now.toUTCString()
       }
     })
   }
 
-  render() {
-    return(
-      <React.Fragment>
-        <div id="chat"></div>
-          <form onSubmit={event => this.handleSubmit(event)}>
-            <input 
-              id="nick"
-              onChange={e => this.setState({nick: e.target.value.replace(/ /g, "")})}
-              type="text"
-              placeholder="What is your nickname..."
-              required
-            />
-                        <input 
-              id="channel"
-              onChange={e => this.setState({channel: e.target.value.replace(/ /g, "")})}
-              type="text"
-              placeholder="Name of channel..."
-              required
-            />
-            <button type="submit">Submit</button>
-          </form>
-      </React.Fragment>
-    )
-  }
+  return(
+    <React.Fragment>
+      <div id="chat"></div>
+        <form onSubmit={event => handleSubmit(event)}>
+          <input 
+            id="nick"
+            onChange={e => setNick(e.target.value.replace(/ /g, ""))}
+            type="text"
+            placeholder="What is your nickname..."
+            required
+          />
+                      <input 
+            id="channel"
+            onChange={e => setChannel(e.target.value.replace(/ /g, ""))}
+            type="text"
+            placeholder="Name of channel..."
+            required
+          />
+          <button type="submit">Submit</button>
+        </form>
+    </React.Fragment>
+  )
 }
 
 export default FormChat;

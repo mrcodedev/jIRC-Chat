@@ -2,8 +2,9 @@ import './App.scss';
 import React from 'react';
 import FormChat from '../FormChat/FormChat'
 
-class App extends React.Component {
-  connectServer() {
+function App(props) {
+  const connectServer = (dataConnection) => {
+    
     const connection = new WebSocket("ws://localhost:8080");
     
     connection.onopen = (event) => {
@@ -19,14 +20,11 @@ class App extends React.Component {
     }
   }
 
-
-  render() {
-    return (
-      <React.Fragment>
-        <FormChat setDataConnection={this.connectServer}></FormChat>
-      </React.Fragment>
-    );
-  }
+  return (
+    <React.Fragment>
+      <FormChat setDataConnection={connectServer}></FormChat>
+    </React.Fragment>
+  );
 }
 
 export default App;
