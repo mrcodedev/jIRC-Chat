@@ -22,7 +22,9 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.3.1",
     "eslint-plugin-react": "^7.23.1",
-    "prettier": "^2.2.1"
+    "lint-staged": ">=10",
+    "prettier": "^2.2.1",
+    "simple-git-hooks": ">=2.0.3"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -50,5 +52,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix",
+    "*.{js,css,md}": "prettier --write"
   }
 }
