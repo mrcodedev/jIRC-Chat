@@ -48,6 +48,4 @@ function FormChat(props) {
   )
 }
 
-//esto es una prueba
-
 export default FormChat;
