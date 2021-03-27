@@ -1,5 +1,5 @@
 import './App.scss';
-import React, { useState } from 'react';
+import React from 'react';
 
 // function connectChat() {
 //   const connection = new WebSocket("ws://localhost:6666");
@@ -18,10 +18,21 @@ class FormChat extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     if(!this.state.nick) {
+      //In future popup of error :D
       return alert("Name can't be empty");
     }
-    console.log(this.state.nick)
-    console.log(this.state.channel)
+
+    const timeElapsed = Date.now()
+    const now = new Date(timeElapsed)
+
+    this.props.dataUser = { 
+      nickName: this.state.nick, 
+      channelName: this.state.channel,
+      date: now.toUTCString()
+    }
+
+
+
   }
 
   render() {
