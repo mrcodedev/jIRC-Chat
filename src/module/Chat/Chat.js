@@ -6,6 +6,16 @@ function Chat(props) {
   const handleSubmit = (event) => {
     event.preventDefault()
     props.messageToChat(message)
+    showMessage(message)
+  }
+
+  const messages = document.querySelector("#messages")
+  const messageBox = document.querySelector("#messageBox")
+
+  const showMessage = (message) => {
+    messages.textContent += `\n\n${message}`
+    messages.scrollTop = messages.scrollHeight
+    messageBox.value = ""
   }
 
   return (
@@ -25,7 +35,6 @@ function Chat(props) {
         }}
       />
       <button
-        id="send"
         title="Send Message!"
         style={{ width: "100%", height: "30px" }}
         onClick={(event) => handleSubmit(event)}
