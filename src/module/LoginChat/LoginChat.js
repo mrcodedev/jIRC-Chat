@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 
-function FormChat(props) {
+function LoginChat(props) {
   const [nick, setNick] = useState("")
   const [channel, setChannel] = useState("")
   const [timeConnection, setTimeConnection] = useState("")
@@ -28,26 +28,23 @@ function FormChat(props) {
 
   return (
     <React.Fragment>
-      <div id="chat"></div>
-      <form onSubmit={(event) => handleSubmit(event)}>
-        <input
-          id="nick"
-          onChange={(e) => setNick(e.target.value.replace(/ /g, ""))}
-          type="text"
-          placeholder="What is your nickname..."
-          required
-        />
-        <input
-          id="channel"
-          onChange={(e) => setChannel(e.target.value.replace(/ /g, ""))}
-          type="text"
-          placeholder="Name of channel..."
-          required
-        />
-        <button type="submit">Submit</button>
-      </form>
+      <input
+        id="nick"
+        onChange={(e) => setNick(e.target.value.replace(/ /g, ""))}
+        type="text"
+        placeholder="What is your nickname..."
+        required
+      />
+      <input
+        id="channel"
+        onChange={(e) => setChannel(e.target.value.replace(/ /g, ""))}
+        type="text"
+        placeholder="Name of channel..."
+        required
+      />
+      <button onClick={(event) => handleSubmit(event)}>Submit</button>
     </React.Fragment>
   )
 }
 
-export default FormChat
+export default LoginChat

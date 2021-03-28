@@ -1,55 +1,56 @@
 import "./App.scss"
-import React, { useEffect } from "react"
-import FormChat from "../FormChat/FormChat"
+import React, { useEffect, useRef, useState } from "react"
+import LoginChat from "../LoginChat/LoginChat"
+import Chat from "../Chat/Chat"
 
-const App = (props) => {
-  let connection
+const App = () => {
+  const [connection, setConnection] = useState(false)
+  const [message, setMessage] = useState("")
+  const socket = useRef(null)
 
-  useEffect(() => {})
+  useEffect(() => {
+    if (socket.current && connection) {
+      socket.current.onopen = onOpen
+      socket.current.onclose = onClose
+      socket.current.onmessage = onMessage
+      socket.current.onerror = onError
+    }
+  }, [connection, message])
 
-  const initConnection = async (dataConnection) => {
-    if (!connection) {
-      return await doConnection(dataConnection)
+  const connectServer = () => {
+    if (!socket.current && !connection) {
+      socket.current = new WebSocket("ws://localhost:8081")
+      setConnection(true)
+    } else {
+      console.log("Ya hay una conexión")
     }
   }
 
-  const doConnection = (dataConnection) => {
-    return new Promise((resolve, reject) => {
-      connection = new WebSocket("ws://localhost:8081")
-
-      connection.onopen = () => {
-        console.log("WebSocket is open now!")
-        console.log("Connected into Chat Server")
-        console.log(dataConnection)
-        resolve()
-      }
-
-      connection.onclose = () => {
-        console.log("WebSocket is close now ¡O_O!")
-        resolve()
-      }
-
-      connection.onerror = (event) => {
-        console.log(`Websocket error :(, reason: ${event})`)
-        reject(event)
-      }
-
-      connection.onmessage = ({ data }) => {
-        console.log(data)
-      }
-    })
+  function onOpen(event) {
+    console.log("Connection :D")
+  }
+  const onClose = (event) => {
+    console.log("WebSocket is close now ¡O_O!")
+    setConnection(false)
+  }
+  const onMessage = (event) => {
+    console.log("holi")
+  }
+  const onError = (event) => {
+    console.log(`Websocket error :(, reason: ${event})`)
   }
 
-  // const sendMessage = () => {
-  //   if (!connection) {
-  //     return
-  //   }
-  //   connection.send("Testing send text...")
-  // }
+  const messageToChat = (event) => {
+    socket.current.send(event)
+    setMessage(event)
+  }
 
   return (
     <React.Fragment>
-      <FormChat setDataConnection={initConnection}></FormChat>
+      {!connection && <LoginChat setDataConnection={() => connectServer()} />}
+      {connection && (
+        <Chat messageToChat={(event) => messageToChat(event)}></Chat>
+      )}
     </React.Fragment>
   )
 }

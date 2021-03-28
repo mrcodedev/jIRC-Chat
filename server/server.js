@@ -1,25 +1,23 @@
-const WebSocket = require("ws").Server
+const express = require("express")
+const http = require("http")
+const WebSocket = require("ws")
 
-const wss = new WebSocket({ port: 8081 })
-
-console.log("Chat Server Started")
+const PORT = 8081
+const SERVER = http.createServer(express)
+const wss = new WebSocket.Server({ server: SERVER })
 
 wss.on("connection", (ws) => {
   ws.on("open", (data) => {
     console.log(data)
   })
 
-  ws.on("ping", (data) => {
-    console.log(data)
-  })
-
   ws.on("message", (data) => {
     console.log(`Client hast sent us: ${data}`)
-    // wss.clients.forEach((client) => {
-    //   if (client.readyState === WebSocket.OPEN) {
-    //     client.send(data)
-    //   }
-    // })
+    wss.clients.forEach((client) => {
+      if (client !== ws && client.readyState === WebSocket.OPEN) {
+        client.send(data)
+      }
+    })
   })
 
   ws.on("error", (data) => {
@@ -30,4 +28,8 @@ wss.on("connection", (ws) => {
   ws.on("close", (data) => {
     console.log("Client has disconnected!")
   })
+})
+
+SERVER.listen(PORT, () => {
+  console.log(`Server is listening on PORT: ${PORT}!`)
 })
