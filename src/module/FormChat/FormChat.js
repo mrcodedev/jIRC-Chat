@@ -1,19 +1,19 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 
 function FormChat(props) {
-  const [nick, setNick] = useState("");
-  const [channel, setChannel] = useState("");
+  const [nick, setNick] = useState("")
+  const [channel, setChannel] = useState("")
 
   const handleSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
     if (!nick) {
       // In future popup of error :D
-      return console.log("Name can't be empty");
+      return console.log("Name can't be empty")
     }
 
-    const timeElapsed = Date.now();
-    const now = new Date(timeElapsed);
+    const timeElapsed = Date.now()
+    const now = new Date(timeElapsed)
 
     props.setDataConnection({
       data: {
@@ -21,8 +21,8 @@ function FormChat(props) {
         channelName: channel,
         dateConnection: now.toUTCString(),
       },
-    });
-  };
+    })
+  }
 
   return (
     <React.Fragment>
@@ -45,7 +45,7 @@ function FormChat(props) {
         <button type="submit">Submit</button>
       </form>
     </React.Fragment>
-  );
+  )
 }
 
-export default FormChat;
+export default FormChat
