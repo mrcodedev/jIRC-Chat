@@ -1,20 +1,11 @@
 import React, { useState } from "react"
-import UseWebSocket from "../UseWebSocket/UseWebSocket"
 
 function Chat(props) {
   const [message, setMessage] = useState("")
 
-  const { socket } = UseWebSocket({
-    url: "localhost",
-    port: 8081,
-    onConnect: () => {
-      console.log("socket ready state", socket.readyState)
-      socket.send("test message")
-    },
-  })
-
   const handleSubmit = (event) => {
     event.preventDefault()
+    props.messageToChat(message)
     showMessage(message)
   }
 
