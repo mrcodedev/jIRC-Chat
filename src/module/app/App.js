@@ -42,7 +42,7 @@ function App(props) {
     if (!connection) {
       return
     }
-    connection.send("Testint text...")
+    connection.send("Testing send text...")
   }
 
   return (
