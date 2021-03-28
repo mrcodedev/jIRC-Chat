@@ -2,24 +2,25 @@ import "./App.scss"
 import React, { useEffect } from "react"
 import FormChat from "../FormChat/FormChat"
 
-function App(props) {
+const App = (props) => {
   let connection
 
   useEffect(() => {})
 
-  const initConnection = async () => {
+  const initConnection = async (dataConnection) => {
     if (!connection) {
-      return await doConnection()
+      return await doConnection(dataConnection)
     }
   }
 
-  const doConnection = () => {
+  const doConnection = (dataConnection) => {
     return new Promise((resolve, reject) => {
       connection = new WebSocket("ws://localhost:8081")
 
       connection.onopen = () => {
         console.log("WebSocket is open now!")
         console.log("Connected into Chat Server")
+        console.log(dataConnection)
         resolve()
       }
 
@@ -38,17 +39,17 @@ function App(props) {
       }
     })
   }
-  const sendMessage = () => {
-    if (!connection) {
-      return
-    }
-    connection.send("Testing send text...")
-  }
+
+  // const sendMessage = () => {
+  //   if (!connection) {
+  //     return
+  //   }
+  //   connection.send("Testing send text...")
+  // }
 
   return (
     <React.Fragment>
       <FormChat setDataConnection={initConnection}></FormChat>
-      <button onClick={() => sendMessage()}>Testing button</button>
     </React.Fragment>
   )
 }

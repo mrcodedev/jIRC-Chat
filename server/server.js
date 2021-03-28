@@ -1,9 +1,17 @@
-const WebSocket = require("ws")
+const WebSocket = require("ws").Server
 
-const wss = new WebSocket.Server({ port: 8081 })
+const wss = new WebSocket({ port: 8081 })
+
+console.log("Chat Server Started")
 
 wss.on("connection", (ws) => {
-  console.log("New client connected!")
+  ws.on("open", (data) => {
+    console.log(data)
+  })
+
+  ws.on("ping", (data) => {
+    console.log(data)
+  })
 
   ws.on("message", (data) => {
     console.log(`Client hast sent us: ${data}`)
