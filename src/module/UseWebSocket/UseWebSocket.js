@@ -22,8 +22,10 @@ const useWebSocket = ({ url, port, onConnect }) => {
     if (!socket.current && !connection) {
       socket.current = new WebSocket(`ws://${url}:${port}`)
       console.log("Running Server...")
+      socket.current.readyState !== 1
+        ? setConnection(false)
+        : setConnection(true)
       console.log(socket.current)
-      setConnection(true)
     } else {
       console.log("Ya hay una conexión")
     }
@@ -49,6 +51,7 @@ const useWebSocket = ({ url, port, onConnect }) => {
     socket: socket.current,
     messages,
     setMessages,
+    connection,
   }
 }
 
