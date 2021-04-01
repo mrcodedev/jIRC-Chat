@@ -16,14 +16,13 @@ const App = () => {
     }
   }, [status])
 
-  const userInfoConnect = (event) => {
+  const userInfoConnect = (data) => {
     setSpinner(true)
-    setDataConnection(event)
+    setDataConnection(data)
     // TODO: Leave when end all
     setTimeout(() => {
       setStatus(true)
     }, 1000)
-    console.log(event)
   }
 
   const doCheckStatus = ({ connection }) => {
