@@ -9,6 +9,12 @@ const App = () => {
   const [status, setStatus] = useState(false)
   const [spinner, setSpinner] = useState(false)
 
+  useEffect(() => {
+    if (status) {
+      setSpinner(false)
+    }
+  }, [status])
+
   const userInfoConnect = (event) => {
     setSpinner(true)
     // TODO: Leave when end all
@@ -17,11 +23,9 @@ const App = () => {
     }, 1000)
   }
 
-  useEffect(() => {
-    if (status) {
-      setSpinner(false)
-    }
-  }, [status])
+  const doCheckStatus = ({ connection }) => {
+    setStatus(connection)
+  }
 
   return (
     <div className="container__app">
@@ -30,7 +34,9 @@ const App = () => {
           <LoginChat setDataConnection={(event) => userInfoConnect(event)} />
         </div>
       )}
-      {status && <Chat statusConnection={(event) => setStatus(event)}></Chat>}{" "}
+      {status && (
+        <Chat statusConnection={(event) => doCheckStatus(event)}></Chat>
+      )}{" "}
       {spinner && <Spinner />}
     </div>
   )

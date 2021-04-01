@@ -4,39 +4,60 @@
   margin: 0;
   padding: 0;
   height: 100%;
-  h1 {
-    margin: 0px 0px 0px 10px;
-    padding: 0px;
-    padding: 12px;
+
+  .chat__header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 25px;
+
+    h1 {
+      margin: 0px;
+      padding: 0px;
+      margin-block-start: 0px;
+      margin-block-end: 0px;
+      margin-inline-start: 0px;
+    }
   }
 
-  pre {
-    white-space: pre-wrap;
-    word-wrap: break-word;
-  }
-
-  input {
-    display: block;
-    margin-bottom: 10px;
-    padding: 10px;
-  }
-
-  #messages {
-    background-color: white;
-    color: black;
-    overflow-y: auto;
+  .chat__messages {
+    display: flex;
+    flex-direction: column;
     height: 100%;
-    margin: 5px 25px 15px 25px;
-    padding: 10px;
-    overflow-wrap: break-word;
+    pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    #messages {
+      background-color: white;
+      color: black;
+      overflow-y: auto;
+      height: 100%;
+      margin: 5px 25px 15px 25px;
+      padding: 10px;
+      overflow-wrap: break-word;
+    }
   }
 
-  #message-box {
-    margin: 0px 25px 5px 25px;
-  }
+  .chat__send {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    input {
+      display: block;
+      margin-bottom: 10px;
+      padding: 10px;
+    }
 
-  button {
-    height: 45px;
-    margin: 5px 25px 15px 25px;
+    #message-box {
+      margin: 0px 25px 5px 25px;
+    }
+
+    button {
+      height: 45px;
+      margin: 5px 25px 15px 25px;
+    }
   }
 }

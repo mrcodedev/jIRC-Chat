@@ -15,9 +15,13 @@ function Chat(props) {
     },
   })
 
-  const handleSubmit = (event) => {
+  const handleSubmitMessage = (event) => {
     event.preventDefault()
     showMessage(message)
+  }
+
+  const handleSubmitClose = () => {
+    props.statusConnection({ connection: false })
   }
 
   const messages = document.querySelector("#messages")
@@ -31,17 +35,27 @@ function Chat(props) {
 
   return (
     <div className="container__chat">
-      <h1> Channel Name </h1>
-      <pre id="messages"></pre>
-      <input
-        type="text"
-        id="message-box"
-        placeholder="Type your message here..."
-        onChange={(e) => setMessage(e.target.value)}
-      />
-      <button title="Send Message!" onClick={(event) => handleSubmit(event)}>
-        Send Message
-      </button>
+      <div className="chat__header">
+        <h1> Channel Name </h1>
+        <button onClick={() => handleSubmitClose()}>Server logout</button>
+      </div>
+      <div className="chat__messages">
+        <pre id="messages"></pre>
+      </div>
+      <div className="chat__send">
+        <input
+          type="text"
+          id="message-box"
+          placeholder="Type your message here..."
+          onChange={(e) => setMessage(e.target.value)}
+        />
+        <button
+          title="Send Message!"
+          onClick={(event) => handleSubmitMessage(event)}
+        >
+          Send Message
+        </button>
+      </div>
     </div>
   )
 }
