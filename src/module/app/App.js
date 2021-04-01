@@ -8,6 +8,7 @@ import "./App.scss"
 const App = () => {
   const [status, setStatus] = useState(false)
   const [spinner, setSpinner] = useState(false)
+  const [dataConnection, setDataConnection] = useState({})
 
   useEffect(() => {
     if (status) {
@@ -17,10 +18,12 @@ const App = () => {
 
   const userInfoConnect = (event) => {
     setSpinner(true)
+    setDataConnection(event)
     // TODO: Leave when end all
     setTimeout(() => {
       setStatus(true)
     }, 1000)
+    console.log(event)
   }
 
   const doCheckStatus = ({ connection }) => {
@@ -35,7 +38,10 @@ const App = () => {
         </div>
       )}
       {status && (
-        <Chat statusConnection={(event) => doCheckStatus(event)}></Chat>
+        <Chat
+          statusConnection={(event) => doCheckStatus(event)}
+          dataConnection={dataConnection}
+        ></Chat>
       )}{" "}
       {spinner && <Spinner />}
     </div>

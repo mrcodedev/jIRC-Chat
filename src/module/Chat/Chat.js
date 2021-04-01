@@ -4,6 +4,7 @@ import UseWebSocket from "../UseWebSocket/UseWebSocket"
 import "./Chat.scss"
 
 function Chat(props) {
+  console.log(props)
   const [message, setMessage] = useState("")
 
   const { socket } = UseWebSocket({
@@ -28,7 +29,7 @@ function Chat(props) {
   const messageBox = document.querySelector("#message-box")
 
   const showMessage = (message) => {
-    messages.textContent += `Nick: ${message}\n`
+    messages.textContent += `${props.dataConnection.data.nickName}: ${message}\n`
     messages.scrollTop = messages.scrollHeight
     messageBox.value = ""
   }
@@ -36,7 +37,7 @@ function Chat(props) {
   return (
     <div className="container__chat">
       <div className="chat__header">
-        <h1> Channel Name </h1>
+        <h1>#{props.dataConnection.data.channelName}</h1>
         <button onClick={() => handleSubmitClose()}>Server logout</button>
       </div>
       <div className="chat__messages">

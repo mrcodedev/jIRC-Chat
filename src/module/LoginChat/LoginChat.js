@@ -31,22 +31,22 @@ function LoginChat(props) {
   return (
     <div className="container__login-chat">
       <div className="login-chat__input-field">
-        <label>Nickname</label>
-        <input
-          id="nick"
-          onChange={(e) => setNick(e.target.value.replace(/ /g, ""))}
-          type="text"
-          placeholder="What is your nickname..."
-          required
-        />
-      </div>
-      <div className="login-chat__input-field">
         <label>Channel</label>
         <input
           id="channel"
           onChange={(e) => setChannel(e.target.value.replace(/ /g, ""))}
           type="text"
           placeholder="Name of channel..."
+          required
+        />
+      </div>
+      <div className="login-chat__input-field">
+        <label>Nickname</label>
+        <input
+          id="nick"
+          onChange={(e) => setNick(e.target.value.replace(/ /g, ""))}
+          type="text"
+          placeholder="What is your nickname..."
           required
         />
       </div>
