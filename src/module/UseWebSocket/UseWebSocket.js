@@ -2,41 +2,58 @@ import { useState, useRef, useEffect } from "react"
 
 const useWebSocket = ({ url, port, onConnect }) => {
   const [connection, setConnection] = useState(false)
-  const [messages, setMessages] = useState("")
+  // eslint-disable-next-line no-unused-vars
+  const [message, setMessage] = useState("")
+  const [messages, setMessages] = useState([])
   const socket = useRef(null)
 
-  useEffect(() => {
+  useEffect(async () => {
     if (!socket.current && !connection) {
-      connectServer()
-    }
-
-    if (socket.current && connection) {
-      socket.current.onopen = onOpen
-      socket.current.onclose = onClose
-      socket.current.onmessage = onMessage
-      socket.current.onerror = onError
+      socket.current = await connectServer()
     }
   }, [url, port, onConnect])
 
-  const connectServer = () => {
+  const connectServer = async () => {
     if (!socket.current && !connection) {
-      socket.current = new WebSocket(`ws://${url}:${port}`)
       console.log("Running Server...")
+      socket.current = await connect()
+
+      socket.current.onmessage = () => {
+        console.log("me he metido")
+      }
+
       socket.current.readyState !== 1
         ? setConnection(false)
         : setConnection(true)
-      console.log(socket.current)
-    } else {
-      console.log("Ya hay una conexión")
+
+      return socket.current
     }
   }
 
-  function onOpen(event) {
-    onConnect(socket.current)
+  const connect = async () => {
+    return new Promise((resolve, reject) => {
+      socket.current = new WebSocket(`ws://${url}:${port}`)
+
+      socket.current.onopen = onConnect
+      socket.current.onclose = onClose
+      socket.current.onmessage = onMessage
+      socket.current.onerror = onError
+    })
   }
+
+  // function onOpen() {
+  //   console.log("socket ready state", socket.current.readyState)
+  //   socket.current.send(
+  //     JSON.stringify({
+  //       type: "connect",
+  //     })
+  //   )
+  // }
+
   const onClose = (event) => {
     console.log("WebSocket is close now ¡O_O!")
     setConnection(false)
+    socket.current.close()
     socket.current = undefined
   }
   const onMessage = (event) => {

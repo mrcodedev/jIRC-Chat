@@ -1,27 +1,33 @@
-import React, { useState } from "react"
+import React from "react"
 import UseWebSocket from "../UseWebSocket/UseWebSocket"
 
 import "./Chat.scss"
 
 function Chat(props) {
-  console.log(props)
-  const [message, setMessage] = useState("")
+  const inputMessage = React.createRef()
 
   const { socket } = UseWebSocket({
     url: "localhost",
     port: 8081,
-    onConnect: () => {
-      console.log("socket ready state", socket.readyState)
-      socket.send("test message")
+    onConnect: (socketConnect) => {
+      console.log("socket ready state", socketConnect.currentTarget.readyState)
+      socketConnect.currentTarget.send(
+        JSON.stringify({
+          type: "connect",
+          user: props.dataConnection.data.nickName,
+          channel: props.dataConnection.data.channelName,
+        })
+      )
     },
   })
 
   const handleSubmitMessage = (event) => {
     event.preventDefault()
-    showMessage(message)
+    showMessage(inputMessage.current.value)
   }
 
   const handleSubmitClose = () => {
+    socket.close()
     props.statusConnection({ connection: false })
   }
 
@@ -32,6 +38,7 @@ function Chat(props) {
     messages.textContent += `${props.dataConnection.data.nickName}: ${message}\n`
     messages.scrollTop = messages.scrollHeight
     messageBox.value = ""
+    socket.send(message)
   }
 
   return (
@@ -48,7 +55,7 @@ function Chat(props) {
           type="text"
           id="message-box"
           placeholder="Type your message here..."
-          onChange={(e) => setMessage(e.target.value)}
+          ref={inputMessage}
         />
         <button
           title="Send Message!"
