@@ -1,0 +1,45 @@
+.container__chat {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  h1 {
+    margin: 0px 0px 0px 10px;
+    padding: 0px;
+    padding: 12px;
+  }
+
+  pre {
+    white-space: pre-wrap; /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+    white-space: -pre-wrap; /* Opera 4-6 */
+    white-space: -o-pre-wrap; /* Opera 7 */
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
+  }
+
+  input {
+    display: block;
+    margin-bottom: 10px;
+    padding: 10px;
+  }
+
+  #messages {
+    background-color: white;
+    color: black;
+    overflow-y: auto;
+    height: 100%;
+    margin: 5px 25px 15px 25px;
+    padding: 10px;
+    overflow-wrap: break-word;
+  }
+
+  #message-box {
+    margin: 0px 25px 5px 25px;
+  }
+
+  button {
+    height: 45px;
+    margin: 5px 25px 15px 25px;
+  }
+}

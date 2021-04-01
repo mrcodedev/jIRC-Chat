@@ -1,7 +1,8 @@
-import "./App.scss"
 import React, { useEffect, useRef, useState } from "react"
 import LoginChat from "../LoginChat/LoginChat"
 import Chat from "../Chat/Chat"
+
+import "./App.scss"
 
 const App = () => {
   const [connection, setConnection] = useState(false)

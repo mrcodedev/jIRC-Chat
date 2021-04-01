@@ -1,5 +1,7 @@
 import React, { useState } from "react"
 
+import "./LoginChat.scss"
+
 function LoginChat(props) {
   const [nick, setNick] = useState("")
   const [channel, setChannel] = useState("")
@@ -27,23 +29,29 @@ function LoginChat(props) {
   }
 
   return (
-    <React.Fragment>
-      <input
-        id="nick"
-        onChange={(e) => setNick(e.target.value.replace(/ /g, ""))}
-        type="text"
-        placeholder="What is your nickname..."
-        required
-      />
-      <input
-        id="channel"
-        onChange={(e) => setChannel(e.target.value.replace(/ /g, ""))}
-        type="text"
-        placeholder="Name of channel..."
-        required
-      />
+    <div className="container__login-chat">
+      <div className="login-chat__input-field">
+        <label>Nickname</label>
+        <input
+          id="nick"
+          onChange={(e) => setNick(e.target.value.replace(/ /g, ""))}
+          type="text"
+          placeholder="What is your nickname..."
+          required
+        />
+      </div>
+      <div className="login-chat__input-field">
+        <label>Channel</label>
+        <input
+          id="channel"
+          onChange={(e) => setChannel(e.target.value.replace(/ /g, ""))}
+          type="text"
+          placeholder="Name of channel..."
+          required
+        />
+      </div>
       <button onClick={(event) => handleSubmit(event)}>Submit</button>
-    </React.Fragment>
+    </div>
   )
 }
 

@@ -1,0 +1,19 @@
+.container__login-chat {
+  padding: 30px;
+  background-color: white;
+  color: black;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  .login-chat__input-field {
+    display: flex;
+    flex-direction: column;
+    margin: 0px 0px 12px 0px;
+    label {
+      padding-bottom: 5px;
+    }
+  }
+  button {
+    margin: 20px 0px 0px 0px;
+  }
+}

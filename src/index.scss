@@ -1,5 +1,10 @@
 @import "./normalize.scss";
 
+html,
+body {
+  height: 100%;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -7,8 +12,15 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #282c34;
   color: white;
+  background-color: #282c34;
+}
+
+#root {
+  height: 100%;
+  .container__root {
+    height: 100%;
+  }
 }
 
 code {
