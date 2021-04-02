@@ -63,7 +63,6 @@ function Chat(props) {
         <button onClick={() => handleSubmitClose()}>Server logout</button>
       </div>
       <div className="chat__messages">
-        {/* <pre id="messages"></pre> */}
         {messages
           .filter((message) => message.type === "say")
           .map((message, index) => (
