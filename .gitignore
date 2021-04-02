@@ -1,8 +1,5 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# enviroment variables
-src/config.json
-
 # dependencies
 /node_modules
 /.pnp
@@ -25,3 +22,4 @@ src/config.json
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+src/config.json
