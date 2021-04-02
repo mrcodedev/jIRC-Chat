@@ -9,7 +9,7 @@ function Chat(props) {
   const channel = props.dataConnection.data.channelName
 
   const inputMessage = React.createRef()
-  const [isConnected, setIsConnected] = useState(false)
+  const [, setIsConnected] = useState(false)
   const [message, setMessage] = useState([])
 
   const onConnect = (socket) => {
@@ -20,6 +20,7 @@ function Chat(props) {
         type: "connect",
         user: nickName,
         channel,
+        time: props.dataConnection.data.dateConnection,
       })
     )
   }
@@ -35,7 +36,7 @@ function Chat(props) {
   }
 
   const { socket, disconnect, messages } = UseWebSocket({
-    url: "localhost",
+    url: "192.168.1.132",
     port: 8081,
     onConnect,
   })

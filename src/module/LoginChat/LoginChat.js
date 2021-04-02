@@ -5,7 +5,6 @@ import "./LoginChat.scss"
 function LoginChat(props) {
   const [nick, setNick] = useState("")
   const [channel, setChannel] = useState("")
-  const [timeConnection, setTimeConnection] = useState("")
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -17,13 +16,12 @@ function LoginChat(props) {
 
     const timeElapsed = Date.now()
     const now = new Date(timeElapsed)
-    setTimeConnection(now.toUTCString())
 
     props.setDataConnection({
       data: {
         nickName: nick,
         channelName: channel,
-        dateConnection: timeConnection,
+        dateConnection: now.toUTCString(),
       },
     })
   }
