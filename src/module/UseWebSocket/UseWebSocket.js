@@ -1,29 +1,35 @@
 import { useState, useRef, useEffect } from "react"
 
 const useWebSocket = ({ url, port, onConnect }) => {
-  const [disconnect, setDisconnect] = useState(false)
-  // eslint-disable-next-line no-unused-vars
-  const [message, setMessage] = useState("")
-  const [messages, setMessages] = useState([])
   const socket = useRef(null)
+  const [disconnect, setDisconnect] = useState(false)
+  const [messages, setMessages] = useState([])
 
   useEffect(() => {
     if (!socket.current) {
-      connectServer()
+      console.log("Creating connection to Server...")
+      socket.current = new WebSocket(`ws://${url}:${port}`)
+      socket.current.onopen = onConnect
+      socket.current.onclose = onClose
+      socket.current.onmessage = onMessage
+      socket.current.onerror = onError
     }
 
     return () => {
       setDisconnect(false)
     }
-  }, [url, port])
+  }, [url, port, disconnect, onConnect])
 
-  const connectServer = () => {
-    console.log("Creating connection to Server...")
-    socket.current = new WebSocket(`ws://${url}:${port}`)
-    socket.current.onopen = onConnect
-    socket.current.onclose = onClose
-    socket.current.onmessage = onMessage
-    socket.current.onerror = onError
+  const onMessage = (event) => {
+    console.log("Message Received:" + event.data)
+    const data = JSON.parse(event.data)
+    switch (data.type) {
+      case "say":
+        setMessages((prev) => [...prev, data])
+        break
+      default:
+        break
+    }
   }
 
   const onClose = () => {
@@ -32,25 +38,14 @@ const useWebSocket = ({ url, port, onConnect }) => {
     setDisconnect(true)
   }
 
-  const onMessage = (event) => {
-    console.log(`Message Received: ${event}`)
-    setMessages((prev) => [...prev, event])
-  }
-
   const onError = (event) => {
     console.log(`Websocket error :(, reason: ${event})`)
     setDisconnect(true)
   }
 
-  const readyState = () => {
-    return socket.current.readyState
-  }
-
   return {
     socket: socket.current,
     messages,
-    setMessages,
-    readyState: readyState,
     disconnect,
   }
 }

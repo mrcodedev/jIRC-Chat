@@ -2,7 +2,7 @@ const RULES = {
   OFF: "off",
   WARN: "warn",
   ERROR: "error",
-};
+}
 
 module.exports = {
   env: {
@@ -18,9 +18,11 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: "module",
   },
-  plugins: ["react"],
+  plugins: ["react", "react-hooks"],
   rules: {
     "react/react-in-jsx-scope": RULES.OFF,
     "react/prop-types": RULES.OFF,
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
   },
-};
+}

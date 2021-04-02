@@ -5,47 +5,55 @@ import UseWebSocket from "../UseWebSocket/UseWebSocket"
 import "./Chat.scss"
 
 function Chat(props) {
-  const [isConnected, setIsConnected] = useState(false)
-  const { socket, disconnect } = UseWebSocket({
-    url: "localhost",
-    port: 8081,
-    onConnect: (socketConnect) => {
-      setIsConnected(true)
-      socketConnect.currentTarget.send(
-        JSON.stringify({
-          type: "connect",
-          user: props.dataConnection.data.nickName,
-          channel: props.dataConnection.data.channelName,
-        })
-      )
-    },
-  })
+  const nickName = props.dataConnection.data.nickName
+  const channel = props.dataConnection.data.channelName
 
   const inputMessage = React.createRef()
+  const [isConnected, setIsConnected] = useState(false)
+  const [message, setMessage] = useState([])
+
+  const onConnect = (socket) => {
+    console.log("Connected :D")
+    setIsConnected(true)
+    socket.currentTarget.send(
+      JSON.stringify({
+        type: "connect",
+        user: nickName,
+        channel,
+      })
+    )
+  }
+
+  const sendMessage = () => {
+    const sendMessage = JSON.stringify({
+      type: "say",
+      sender: nickName,
+      text: inputMessage.current.value,
+    })
+    socket.send(sendMessage)
+    setMessage((prev) => [...prev, sendMessage])
+  }
+
+  const { socket, disconnect, messages } = UseWebSocket({
+    url: "localhost",
+    port: 8081,
+    onConnect,
+  })
 
   useEffect(() => {
     if (disconnect) {
       props.statusDisconnected(true)
     }
-  }, [disconnect])
+  }, [disconnect, message, props])
 
   const handleSubmitMessage = (event) => {
     event.preventDefault()
-    showMessage(inputMessage.current.value)
+    setMessage(inputMessage.current.value)
+    sendMessage()
   }
 
   const handleSubmitClose = () => {
     socket.close()
-  }
-
-  const messages = document.querySelector("#messages")
-  const messageBox = document.querySelector("#message-box")
-
-  const showMessage = (message) => {
-    messages.textContent += `${props.dataConnection.data.nickName}: ${message}\n`
-    messages.scrollTop = messages.scrollHeight
-    messageBox.value = ""
-    socket.send(message)
   }
 
   return (
@@ -55,7 +63,14 @@ function Chat(props) {
         <button onClick={() => handleSubmitClose()}>Server logout</button>
       </div>
       <div className="chat__messages">
-        <pre id="messages"></pre>
+        {/* <pre id="messages"></pre> */}
+        {messages
+          .filter((message) => message.type === "say")
+          .map((message, index) => (
+            <div key={index} className="message">
+              {`${message.sender}: ${message.text}`}
+            </div>
+          ))}
       </div>
       <div className="chat__send">
         <input
