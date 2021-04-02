@@ -15,10 +15,10 @@ const useWebSocket = ({ url, port, onConnect }) => {
     return () => {
       setDisconnect(false)
     }
-  }, [url, port, disconnect])
+  }, [url, port])
 
   const connectServer = () => {
-    console.log("Running Server...")
+    console.log("Creating connection to Server...")
     socket.current = new WebSocket(`ws://${url}:${port}`)
     socket.current.onopen = onConnect
     socket.current.onclose = onClose

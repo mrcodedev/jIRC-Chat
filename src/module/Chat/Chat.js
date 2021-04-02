@@ -5,12 +5,12 @@ import UseWebSocket from "../UseWebSocket/UseWebSocket"
 import "./Chat.scss"
 
 function Chat(props) {
-  const [chat, setChat] = useState(false)
+  const [isConnected, setIsConnected] = useState(false)
   const { socket, disconnect } = UseWebSocket({
     url: "localhost",
     port: 8081,
     onConnect: (socketConnect) => {
-      setChat(true)
+      setIsConnected(true)
       socketConnect.currentTarget.send(
         JSON.stringify({
           type: "connect",
