@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import LoginChat from "../LoginChat/LoginChat"
 import Chat from "../Chat/Chat"
 import Spinner from "../../components/Spinner/Spinner"
@@ -10,22 +10,17 @@ const App = () => {
   const [spinner, setSpinner] = useState(false)
   const [dataConnection, setDataConnection] = useState({})
 
-  useEffect(() => {
-    if (status) {
-      setSpinner(false)
-    }
-  }, [status])
-
   const userInfoConnect = (data) => {
     setSpinner(true)
     setDataConnection(data)
     // TODO: Leave when end all
     setTimeout(() => {
       setStatus(true)
+      setSpinner(false)
     }, 1000)
   }
 
-  const doCheckStatus = ({ connection }) => {
+  const checkDisconnected = ({ connection }) => {
     setStatus(connection)
   }
 
@@ -38,7 +33,7 @@ const App = () => {
       )}
       {status && (
         <Chat
-          statusConnection={(event) => doCheckStatus(event)}
+          statusDisconnected={(event) => checkDisconnected(event)}
           dataConnection={dataConnection}
         ></Chat>
       )}{" "}

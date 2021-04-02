@@ -1,16 +1,16 @@
-import React from "react"
+/* eslint-disable no-unused-vars */
+import React, { useEffect, useState } from "react"
 import UseWebSocket from "../UseWebSocket/UseWebSocket"
 
 import "./Chat.scss"
 
 function Chat(props) {
-  const inputMessage = React.createRef()
-
-  const { socket } = UseWebSocket({
+  const [chat, setChat] = useState(false)
+  const { socket, disconnect } = UseWebSocket({
     url: "localhost",
     port: 8081,
     onConnect: (socketConnect) => {
-      console.log("socket ready state", socketConnect.currentTarget.readyState)
+      setChat(true)
       socketConnect.currentTarget.send(
         JSON.stringify({
           type: "connect",
@@ -21,6 +21,14 @@ function Chat(props) {
     },
   })
 
+  const inputMessage = React.createRef()
+
+  useEffect(() => {
+    if (disconnect) {
+      props.statusDisconnected(true)
+    }
+  }, [disconnect])
+
   const handleSubmitMessage = (event) => {
     event.preventDefault()
     showMessage(inputMessage.current.value)
@@ -28,7 +36,6 @@ function Chat(props) {
 
   const handleSubmitClose = () => {
     socket.close()
-    props.statusConnection({ connection: false })
   }
 
   const messages = document.querySelector("#messages")
