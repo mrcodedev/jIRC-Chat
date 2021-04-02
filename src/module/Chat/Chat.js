@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+import { URL, PORT } from "../../config.json"
 import React, { useEffect, useState } from "react"
 import UseWebSocket from "../UseWebSocket/UseWebSocket"
 
@@ -36,8 +36,8 @@ function Chat(props) {
   }
 
   const { socket, disconnect, messages } = UseWebSocket({
-    url: "192.168.1.132",
-    port: 8081,
+    url: URL,
+    port: PORT,
     onConnect,
   })
 
