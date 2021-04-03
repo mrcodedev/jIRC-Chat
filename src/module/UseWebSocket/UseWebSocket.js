@@ -27,6 +27,12 @@ const useWebSocket = ({ url, port, onConnect }) => {
       case "say":
         setMessages((prev) => [...prev, data])
         break
+      case "connect":
+        setMessages((prev) => [...prev, data])
+        break
+      case "disconnect":
+        setMessages((prev) => [...prev, data])
+        break
       default:
         break
     }

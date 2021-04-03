@@ -1,9 +1,19 @@
 .container__app {
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   .app__login-chat {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     height: 100%;
+    .app__error-message {
+      background-color: red;
+      padding: 20px;
+      margin: 20px;
+    }
   }
 }

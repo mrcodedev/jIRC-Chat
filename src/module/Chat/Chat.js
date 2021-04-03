@@ -54,6 +54,12 @@ function Chat(props) {
   }
 
   const handleSubmitClose = () => {
+    socket.send(
+      JSON.stringify({
+        type: "disconnect",
+        user: nickName,
+      })
+    )
     socket.close()
   }
 
@@ -65,12 +71,40 @@ function Chat(props) {
       </div>
       <div className="chat__messages">
         {messages
-          .filter((message) => message.type === "say")
-          .map((message, index) => (
-            <div key={index} className="message">
-              {`${message.sender}: ${message.text}`}
-            </div>
-          ))}
+          .filter(
+            (message) =>
+              message.type === "say" ||
+              message.type === "connect" ||
+              message.type === "disconnect"
+          )
+          .map((message, index) => {
+            console.log(message.type)
+            if (message.type === "connect") {
+              return (
+                <div key={index} className="message">
+                  {`${message.user} has connected...`}
+                </div>
+              )
+            }
+
+            if (message.type === "say") {
+              return (
+                <div key={index} className="message">
+                  {`${message.sender}: ${message.text}`}
+                </div>
+              )
+            }
+
+            if (message.type === "disconnect") {
+              return (
+                <div key={index} className="message">
+                  {`${message.user} it has disconnected...`}
+                </div>
+              )
+            }
+
+            return false
+          })}
       </div>
       <div className="chat__send">
         <input

@@ -9,9 +9,8 @@ function LoginChat(props) {
   const handleSubmit = (event) => {
     event.preventDefault()
 
-    if (!nick) {
-      // In future popup of error :D
-      return console.log("Name can't be empty")
+    if (!nick || !channel) {
+      return props.errorMessage("¡Channel or Nickname cant't be empty!")
     }
 
     const timeElapsed = Date.now()

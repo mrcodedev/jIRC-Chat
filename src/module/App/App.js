@@ -8,12 +8,19 @@ import "./App.scss"
 const App = () => {
   const [status, setStatus] = useState(false)
   const [spinner, setSpinner] = useState(false)
+  const [statusError, setStatusError] = useState(false)
+  const [messageError, setMessageError] = useState("")
   const [dataConnection, setDataConnection] = useState({})
 
   const userInfoConnect = (data) => {
-    setSpinner(true)
+    if (statusError) {
+      setStatusError(false)
+      setMessageError("")
+    }
     setDataConnection(data)
-    // TODO: Leave when end all
+    setSpinner(true)
+
+    // Simulating loading
     setTimeout(() => {
       setStatus(true)
       setSpinner(false)
@@ -24,13 +31,28 @@ const App = () => {
     setStatus(connection)
   }
 
+  const getErrorMessage = (data) => {
+    if (data.length > 0) {
+      setMessageError(data)
+      setStatusError(true)
+    } else {
+      setStatusError(false)
+    }
+  }
+
   return (
     <div className="container__app">
-      {!status && (
-        <div className="app__login-chat">
-          <LoginChat setDataConnection={(event) => userInfoConnect(event)} />
-        </div>
-      )}
+      <div className="app__login-chat">
+        {statusError && !status && (
+          <div className="app__error-message">{messageError}</div>
+        )}
+        {!status && (
+          <LoginChat
+            setDataConnection={(event) => userInfoConnect(event)}
+            errorMessage={(event) => getErrorMessage(event)}
+          />
+        )}
+      </div>
       {status && (
         <Chat
           statusDisconnected={(event) => checkDisconnected(event)}
