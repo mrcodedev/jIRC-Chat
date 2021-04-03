@@ -5,14 +5,15 @@ import UseWebSocket from "../UseWebSocket/UseWebSocket"
 import "./Chat.scss"
 
 function Chat(props) {
+  const inputMessage = React.createRef()
+  const [, setIsConnected] = useState(false)
+  const [countInputMessage, setCountInputMessage] = useState("")
+  const [message, setMessage] = useState([])
+
   const selfNickName = props.dataConnection.data.nickName
   const channel = props.dataConnection.data.channelName
   const timeElapsed = Date.now()
   const now = new Date(timeElapsed)
-
-  const inputMessage = React.createRef()
-  const [, setIsConnected] = useState(false)
-  const [message, setMessage] = useState([])
 
   const onConnect = (socket) => {
     console.log("Connected :D")
@@ -37,6 +38,7 @@ function Chat(props) {
     })
     socket.send(sendMessage)
     setMessage((prev) => [...prev, sendMessage])
+    inputMessage.current.value = ""
   }
 
   const { socket, disconnect, messages } = UseWebSocket({
@@ -54,6 +56,7 @@ function Chat(props) {
   const handleSubmitMessage = (event) => {
     event.preventDefault()
     setMessage(inputMessage.current.value)
+    setCountInputMessage("")
     sendMessage()
   }
 
@@ -66,6 +69,17 @@ function Chat(props) {
       })
     )
     socket.close()
+  }
+
+  const handleChangeInput = (event) => {
+    event.preventDefault()
+    setCountInputMessage(event.target.value)
+  }
+
+  const handleEnterPress = (event) => {
+    if (event.key === "Enter" && countInputMessage) {
+      handleSubmitMessage(event)
+    }
   }
 
   return (
@@ -117,11 +131,14 @@ function Chat(props) {
           type="text"
           id="message-box"
           placeholder="Type your message here..."
+          onChange={handleChangeInput}
+          onKeyPress={(event) => handleEnterPress(event)}
           ref={inputMessage}
         />
         <button
           title="Send Message!"
           onClick={(event) => handleSubmitMessage(event)}
+          disabled={!countInputMessage}
         >
           Send Message
         </button>
