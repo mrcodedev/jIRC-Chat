@@ -21,6 +21,12 @@ function LoginChat(props) {
     })
   }
 
+  const handleEnterPress = (event) => {
+    if (event.key === "Enter") {
+      handleSubmit(event)
+    }
+  }
+
   return (
     <div className="container__login-chat">
       {/* <div className="login-chat__input-field">
@@ -38,12 +44,13 @@ function LoginChat(props) {
         <input
           id="nick"
           onChange={(e) => setNick(e.target.value.replace(/ /g, ""))}
+          onKeyPress={(event) => handleEnterPress(event)}
           type="text"
           placeholder="What is your nickname..."
           required
         />
       </div>
-      <button onClick={(event) => handleSubmit(event)}>Submit</button>
+      <button onClick={(event) => handleSubmit(event)}>Login</button>
     </div>
   )
 }
