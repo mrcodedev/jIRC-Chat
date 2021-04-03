@@ -1,22 +1,21 @@
-import React, { useState } from "react"
+import React, { useRef } from "react"
 
 import "./LoginChat.scss"
 
 function LoginChat(props) {
-  const [nick, setNick] = useState("")
-  const [channel] = useState("jIRC")
+  const inputNickRef = useRef("")
 
   const handleSubmit = (event) => {
     event.preventDefault()
 
-    if (!nick || !channel) {
+    if (!inputNickRef.current?.value) {
       return props.errorMessage("¡Nickname cant't be empty!")
     }
 
     props.userSettingsData({
       userSettings: {
-        nickName: nick,
-        channelName: channel,
+        nickName: inputNickRef.current?.value,
+        channelName: "channel",
       },
     })
   }
@@ -42,10 +41,10 @@ function LoginChat(props) {
       <div className="login-chat__input-field">
         <label>Nickname</label>
         <input
-          id="nick"
-          onChange={(e) => setNick(e.target.value.replace(/ /g, ""))}
-          onKeyPress={(event) => handleEnterPress(event)}
           type="text"
+          id="nick"
+          ref={inputNickRef}
+          onKeyPress={handleEnterPress}
           placeholder="What is your nickname..."
           required
         />

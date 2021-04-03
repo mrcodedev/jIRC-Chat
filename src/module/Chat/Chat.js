@@ -10,7 +10,8 @@ function Chat(props) {
   const channel = props.loginUserSettingsData.userSettings.channelName
 
   const scrollChatRef = useRef(null)
-  const [messageValue, setMessageValue] = useState("")
+  const inputMessageRef = useRef("")
+  const buttonSendRef = useRef(null)
   const [message, setMessage] = useState([])
 
   const time = Date.now()
@@ -18,7 +19,7 @@ function Chat(props) {
   const timeNow = now.toUTCString()
 
   const onConnect = (socket) => {
-    console.log("Connected :D")
+    console.info("Connected :D")
     socket.currentTarget.send(
       JSON.stringify({
         type: "connect",
@@ -30,15 +31,17 @@ function Chat(props) {
   }
 
   const sendMessage = () => {
+    console.log("SEND MESSAGE")
     const sendMessage = JSON.stringify({
       type: "say",
       sender: selfNickName,
       channel,
-      message: messageValue,
+      message: inputMessageRef.current.value,
       time: timeNow,
     })
     socket.send(sendMessage)
     setMessage((prev) => [...prev, sendMessage])
+    inputMessageRef.current.value = ""
   }
 
   const { socket, disconnect, messages } = UseWebSocket({
@@ -51,14 +54,15 @@ function Chat(props) {
     if (disconnect) {
       props.statusDisconnected(true)
     }
-    return () => {
-      setMessageValue("")
-    }
-  }, [disconnect, message, props])
 
-  const handleSubmitMessage = (event) => {
-    event.preventDefault()
-    setMessage(messageValue)
+    console.log("RENDER :D")
+
+    inputMessageRef.current.value = ""
+    buttonSendRef.current.disabled = true
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [disconnect, message])
+
+  const handleSubmitMessage = () => {
     sendMessage()
   }
 
@@ -74,17 +78,57 @@ function Chat(props) {
   }
 
   const handleEnterPress = (event) => {
-    if (event.key === "Enter" && messageValue) {
+    if (event.key === "Enter" && inputMessageRef.current.value.length > 0) {
       handleSubmitMessage(event)
     }
   }
 
-  const handleChangeInput = (event) => {
-    setMessageValue(event.currentTarget.value)
+  const handleChangeInput = () => {
+    if (inputMessageRef.current.value.length === 0) {
+      buttonSendRef.current.disabled = true
+      return true
+    }
+    if (
+      inputMessageRef.current.value.length > 0 &&
+      buttonSendRef.current.disabled
+    ) {
+      buttonSendRef.current.disabled = false
+      return false
+    }
+  }
+
+  const checkMessageAutoScroll = () => {
+    console.log("holiiii")
+    // const chatElement = scrollChatRef.current
+    // const scrollToMessage =
+    //   chatElement?.scrollHeight - chatElement?.scrollTop ===
+    //   chatElement?.clientHeight
+
+    // console.log(scrollToMessage ? "Estoy arriba" : "Estoy abajo")
+
+    // if (scrollToMessage) {
+    //   console.log("NOOOOOO")
+    //   return false
+    // }
+
+    // if (!scrollToMessage) {
+    //   console.log("HASTA ABAJO")
+    //   scrollChatRef.current?.lastElementChild?.scrollIntoView()
+    //   return true
+    // }
+    // !scrollToMessage ? console.log("hazlo") : console.log("no hagas nada")
+    // const xH = chatElement?.scrollHeight
+    // console.log(window)
+    // chatElement?.scrollTo(0, xH)
+    // scrollChatRef.current?.lastElementChild?.scrollIntoView({
+    //   behavior: "smooth",
+    // })
   }
 
   return (
     <div className="container__chat">
+      {checkMessageAutoScroll()}
+
       <div className="chat__header">
         <h1>#{channel}</h1>
         <button onClick={() => handleSubmitClose()}>Server logout</button>
@@ -101,7 +145,7 @@ function Chat(props) {
             if (message.type === "connect") {
               return (
                 <div key={index} className="message">
-                  {`${message.sender} has connected...`}
+                  {`${index}:${message.sender} has connected...`}
                 </div>
               )
             }
@@ -109,7 +153,7 @@ function Chat(props) {
             if (message.type === "say") {
               return (
                 <div key={index} className="message">
-                  {`${message.sender}: ${message.message}`}
+                  {`${index}:${message.sender}: ${message.message}`}
                 </div>
               )
             }
@@ -128,15 +172,15 @@ function Chat(props) {
         <input
           type="text"
           id="message-box"
-          value={messageValue}
+          ref={inputMessageRef}
           placeholder="Type your message here..."
           onKeyPress={(event) => handleEnterPress(event)}
-          onChange={(event) => handleChangeInput(event)}
+          onChange={handleChangeInput}
         />
         <button
+          ref={buttonSendRef}
           title="Send Message!"
-          onClick={(event) => handleSubmitMessage(event)}
-          disabled={!messageValue}
+          onClick={handleSubmitMessage}
         >
           Send Message
         </button>
