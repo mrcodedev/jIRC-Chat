@@ -5,7 +5,7 @@ import UseWebSocket from "../UseWebSocket/UseWebSocket"
 import "./Chat.scss"
 
 function Chat(props) {
-  const nickName = props.dataConnection.data.nickName
+  const selfNickName = props.dataConnection.data.nickName
   const channel = props.dataConnection.data.channelName
   const timeElapsed = Date.now()
   const now = new Date(timeElapsed)
@@ -20,7 +20,7 @@ function Chat(props) {
     socket.currentTarget.send(
       JSON.stringify({
         type: "connect",
-        sender: nickName,
+        sender: selfNickName,
         channel,
         time: now.toUTCString(),
       })
@@ -30,7 +30,7 @@ function Chat(props) {
   const sendMessage = () => {
     const sendMessage = JSON.stringify({
       type: "say",
-      sender: nickName,
+      sender: selfNickName,
       channel,
       text: inputMessage.current.value,
       time: now.toUTCString(),
@@ -61,7 +61,8 @@ function Chat(props) {
     socket.send(
       JSON.stringify({
         type: "disconnect",
-        user: nickName,
+        sender: selfNickName,
+        time: now.toUTCString(),
       })
     )
     socket.close()
@@ -86,7 +87,7 @@ function Chat(props) {
             if (message.type === "connect") {
               return (
                 <div key={index} className="message">
-                  {`${message.user} has connected...`}
+                  {`${message.sender} has connected...`}
                 </div>
               )
             }
@@ -100,9 +101,10 @@ function Chat(props) {
             }
 
             if (message.type === "disconnect") {
+              console.log(message)
               return (
                 <div key={index} className="message">
-                  {`${message.user} it has disconnected...`}
+                  {`${message.sender} it has disconnected...`}
                 </div>
               )
             }
