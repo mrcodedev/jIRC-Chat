@@ -7,6 +7,8 @@ import "./Chat.scss"
 function Chat(props) {
   const nickName = props.dataConnection.data.nickName
   const channel = props.dataConnection.data.channelName
+  const timeElapsed = Date.now()
+  const now = new Date(timeElapsed)
 
   const inputMessage = React.createRef()
   const [, setIsConnected] = useState(false)
@@ -18,9 +20,9 @@ function Chat(props) {
     socket.currentTarget.send(
       JSON.stringify({
         type: "connect",
-        user: nickName,
+        sender: nickName,
         channel,
-        time: props.dataConnection.data.dateConnection,
+        time: now.toUTCString(),
       })
     )
   }
@@ -29,7 +31,9 @@ function Chat(props) {
     const sendMessage = JSON.stringify({
       type: "say",
       sender: nickName,
+      channel,
       text: inputMessage.current.value,
+      time: now.toUTCString(),
     })
     socket.send(sendMessage)
     setMessage((prev) => [...prev, sendMessage])

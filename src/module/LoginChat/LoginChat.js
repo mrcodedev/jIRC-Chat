@@ -13,14 +13,10 @@ function LoginChat(props) {
       return props.errorMessage("¡Channel or Nickname cant't be empty!")
     }
 
-    const timeElapsed = Date.now()
-    const now = new Date(timeElapsed)
-
     props.setDataConnection({
       data: {
         nickName: nick,
         channelName: channel,
-        dateConnection: now.toUTCString(),
       },
     })
   }
