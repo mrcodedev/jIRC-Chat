@@ -6,29 +6,33 @@ import Spinner from "../../components/Spinner/Spinner"
 import "./App.scss"
 
 const App = () => {
-  const [status, setStatus] = useState(false)
+  const [isLogged, setIsLogged] = useState(false)
   const [spinner, setSpinner] = useState(false)
   const [statusError, setStatusError] = useState(false)
   const [messageError, setMessageError] = useState("")
-  const [dataConnection, setDataConnection] = useState({})
+  const [loginUserSettingsData, setLoginUserSettingsData] = useState({})
 
-  const userInfoConnect = (data) => {
-    if (statusError) {
-      setStatusError(false)
-      setMessageError("")
-    }
-    setDataConnection(data)
+  const handlerUserSettingsLogin = (data) => {
+    checkErrors()
+
+    setLoginUserSettingsData(data)
     setSpinner(true)
 
-    // Simulating loading
     setTimeout(() => {
-      setStatus(true)
+      setIsLogged(true)
       setSpinner(false)
     }, 1000)
   }
 
+  const checkErrors = () => {
+    if (statusError) {
+      setStatusError(false)
+      setMessageError("")
+    }
+  }
+
   const checkDisconnected = ({ connection }) => {
-    setStatus(connection)
+    setIsLogged(connection)
   }
 
   const getErrorMessage = (data) => {
@@ -43,22 +47,22 @@ const App = () => {
   return (
     <div className="container__app">
       <div className="app__login-chat">
-        {statusError && !status && (
+        {statusError && !isLogged && (
           <div className="app__error-message">{messageError}</div>
         )}
-        {!status && (
+        {!isLogged && (
           <LoginChat
-            setDataConnection={(event) => userInfoConnect(event)}
+            userSettingsData={(event) => handlerUserSettingsLogin(event)}
             errorMessage={(event) => getErrorMessage(event)}
           />
         )}
       </div>
-      {status && (
+      {isLogged && (
         <Chat
           statusDisconnected={(event) => checkDisconnected(event)}
-          dataConnection={dataConnection}
+          loginUserSettingsData={loginUserSettingsData}
         ></Chat>
-      )}{" "}
+      )}
       {spinner && <Spinner />}
     </div>
   )

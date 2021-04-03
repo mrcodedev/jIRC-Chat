@@ -6,12 +6,11 @@ import "./Chat.scss"
 
 function Chat(props) {
   // props
-  const selfNickName = props.dataConnection.data.nickName
-  const channel = props.dataConnection.data.channelName
+  const selfNickName = props.loginUserSettingsData.userSettings.nickName
+  const channel = props.loginUserSettingsData.userSettings.channelName
 
-  //
   const scrollChatRef = useRef(null)
-  const [inputValue, setInputValue] = useState("")
+  const [messageValue, setMessageValue] = useState("")
   const [message, setMessage] = useState([])
 
   const time = Date.now()
@@ -35,7 +34,7 @@ function Chat(props) {
       type: "say",
       sender: selfNickName,
       channel,
-      text: inputValue,
+      message: messageValue,
       time: timeNow,
     })
     socket.send(sendMessage)
@@ -53,13 +52,13 @@ function Chat(props) {
       props.statusDisconnected(true)
     }
     return () => {
-      setInputValue("")
+      setMessageValue("")
     }
   }, [disconnect, message, props])
 
   const handleSubmitMessage = (event) => {
     event.preventDefault()
-    setMessage(inputValue)
+    setMessage(messageValue)
     sendMessage()
   }
 
@@ -75,19 +74,19 @@ function Chat(props) {
   }
 
   const handleEnterPress = (event) => {
-    if (event.key === "Enter" && inputValue) {
+    if (event.key === "Enter" && messageValue) {
       handleSubmitMessage(event)
     }
   }
 
   const handleChangeInput = (event) => {
-    setInputValue(event.currentTarget.value)
+    setMessageValue(event.currentTarget.value)
   }
 
   return (
     <div className="container__chat">
       <div className="chat__header">
-        <h1>#{props.dataConnection.data.channelName}</h1>
+        <h1>#{channel}</h1>
         <button onClick={() => handleSubmitClose()}>Server logout</button>
       </div>
       <div className="chat__messages" ref={scrollChatRef}>
@@ -110,7 +109,7 @@ function Chat(props) {
             if (message.type === "say") {
               return (
                 <div key={index} className="message">
-                  {`${message.sender}: ${message.text}`}
+                  {`${message.sender}: ${message.message}`}
                 </div>
               )
             }
@@ -129,15 +128,15 @@ function Chat(props) {
         <input
           type="text"
           id="message-box"
+          value={messageValue}
           placeholder="Type your message here..."
-          value={inputValue}
           onKeyPress={(event) => handleEnterPress(event)}
           onChange={(event) => handleChangeInput(event)}
         />
         <button
           title="Send Message!"
           onClick={(event) => handleSubmitMessage(event)}
-          disabled={!inputValue}
+          disabled={!messageValue}
         >
           Send Message
         </button>

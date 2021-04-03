@@ -10,11 +10,11 @@ function LoginChat(props) {
     event.preventDefault()
 
     if (!nick || !channel) {
-      return props.errorMessage("¡Channel or Nickname cant't be empty!")
+      return props.errorMessage("¡Nickname cant't be empty!")
     }
 
-    props.setDataConnection({
-      data: {
+    props.userSettingsData({
+      userSettings: {
         nickName: nick,
         channelName: channel,
       },
