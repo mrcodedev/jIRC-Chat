@@ -25,11 +25,7 @@ const useWebSocket = ({ url, port, onConnect }) => {
     const data = JSON.parse(event.data)
     switch (data.type) {
       case "say":
-        setMessages((prev) => [...prev, data])
-        break
       case "connect":
-        setMessages((prev) => [...prev, data])
-        break
       case "disconnect":
         setMessages((prev) => [...prev, data])
         break
