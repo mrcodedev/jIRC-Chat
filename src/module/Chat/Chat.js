@@ -1,11 +1,12 @@
 import { URL, PORT } from "../../config.json"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import UseWebSocket from "../UseWebSocket/UseWebSocket"
 
 import "./Chat.scss"
 
 function Chat(props) {
-  const inputMessage = React.createRef()
+  const inputMessageRef = React.createRef()
+  const scrollChatRef = useRef(null)
   const [, setIsConnected] = useState(false)
   const [countInputMessage, setCountInputMessage] = useState("")
   const [message, setMessage] = useState([])
@@ -33,12 +34,12 @@ function Chat(props) {
       type: "say",
       sender: selfNickName,
       channel,
-      text: inputMessage.current.value,
+      text: inputMessageRef.current.value,
       time: now.toUTCString(),
     })
     socket.send(sendMessage)
     setMessage((prev) => [...prev, sendMessage])
-    inputMessage.current.value = ""
+    inputMessageRef.current.value = ""
   }
 
   const { socket, disconnect, messages } = UseWebSocket({
@@ -55,7 +56,7 @@ function Chat(props) {
 
   const handleSubmitMessage = (event) => {
     event.preventDefault()
-    setMessage(inputMessage.current.value)
+    setMessage(inputMessageRef.current.value)
     setCountInputMessage("")
     sendMessage()
   }
@@ -82,13 +83,22 @@ function Chat(props) {
     }
   }
 
+  const handlePruebas = () => {
+    scrollChatRef.current.scrollIntoView({
+      block: "nearest",
+      inline: "center",
+      behavior: "smooth",
+      alignToTop: false,
+    })
+  }
+
   return (
     <div className="container__chat">
       <div className="chat__header">
         <h1>#{props.dataConnection.data.channelName}</h1>
         <button onClick={() => handleSubmitClose()}>Server logout</button>
       </div>
-      <div className="chat__messages">
+      <div className="chat__messages" ref={scrollChatRef}>
         {messages
           .filter(
             (message) =>
@@ -97,7 +107,6 @@ function Chat(props) {
               message.type === "disconnect"
           )
           .map((message, index) => {
-            console.log(message.type)
             if (message.type === "connect") {
               return (
                 <div key={index} className="message">
@@ -115,7 +124,6 @@ function Chat(props) {
             }
 
             if (message.type === "disconnect") {
-              console.log(message)
               return (
                 <div key={index} className="message">
                   {`${message.sender} it has disconnected...`}
@@ -133,7 +141,7 @@ function Chat(props) {
           placeholder="Type your message here..."
           onChange={handleChangeInput}
           onKeyPress={(event) => handleEnterPress(event)}
-          ref={inputMessage}
+          ref={inputMessageRef}
         />
         <button
           title="Send Message!"
@@ -142,6 +150,7 @@ function Chat(props) {
         >
           Send Message
         </button>
+        <button onClick={() => handlePruebas()}></button>
       </div>
     </div>
   )
