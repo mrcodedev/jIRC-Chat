@@ -5,26 +5,27 @@ import UseWebSocket from "../UseWebSocket/UseWebSocket"
 import "./Chat.scss"
 
 function Chat(props) {
-  const inputMessageRef = React.createRef()
-  const scrollChatRef = useRef(null)
-  const [, setIsConnected] = useState(false)
-  const [countInputMessage, setCountInputMessage] = useState("")
-  const [message, setMessage] = useState([])
-
+  // props
   const selfNickName = props.dataConnection.data.nickName
   const channel = props.dataConnection.data.channelName
-  const timeElapsed = Date.now()
-  const now = new Date(timeElapsed)
+
+  //
+  const scrollChatRef = useRef(null)
+  const [inputValue, setInputValue] = useState("")
+  const [message, setMessage] = useState([])
+
+  const time = Date.now()
+  const now = new Date(time)
+  const timeNow = now.toUTCString()
 
   const onConnect = (socket) => {
     console.log("Connected :D")
-    setIsConnected(true)
     socket.currentTarget.send(
       JSON.stringify({
         type: "connect",
         sender: selfNickName,
         channel,
-        time: now.toUTCString(),
+        time: timeNow,
       })
     )
   }
@@ -34,12 +35,11 @@ function Chat(props) {
       type: "say",
       sender: selfNickName,
       channel,
-      text: inputMessageRef.current.value,
-      time: now.toUTCString(),
+      text: inputValue,
+      time: timeNow,
     })
     socket.send(sendMessage)
     setMessage((prev) => [...prev, sendMessage])
-    inputMessageRef.current.value = ""
   }
 
   const { socket, disconnect, messages } = UseWebSocket({
@@ -52,12 +52,14 @@ function Chat(props) {
     if (disconnect) {
       props.statusDisconnected(true)
     }
+    return () => {
+      setInputValue("")
+    }
   }, [disconnect, message, props])
 
   const handleSubmitMessage = (event) => {
     event.preventDefault()
-    setMessage(inputMessageRef.current.value)
-    setCountInputMessage("")
+    setMessage(inputValue)
     sendMessage()
   }
 
@@ -66,30 +68,20 @@ function Chat(props) {
       JSON.stringify({
         type: "disconnect",
         sender: selfNickName,
-        time: now.toUTCString(),
+        time: timeNow,
       })
     )
     socket.close()
   }
 
-  const handleChangeInput = (event) => {
-    event.preventDefault()
-    setCountInputMessage(event.target.value)
-  }
-
   const handleEnterPress = (event) => {
-    if (event.key === "Enter" && countInputMessage) {
+    if (event.key === "Enter" && inputValue) {
       handleSubmitMessage(event)
     }
   }
 
-  const handlePruebas = () => {
-    scrollChatRef.current.scrollIntoView({
-      block: "nearest",
-      inline: "center",
-      behavior: "smooth",
-      alignToTop: false,
-    })
+  const handleChangeInput = (event) => {
+    setInputValue(event.currentTarget.value)
   }
 
   return (
@@ -130,8 +122,7 @@ function Chat(props) {
                 </div>
               )
             }
-
-            return false
+            return ""
           })}
       </div>
       <div className="chat__send">
@@ -139,18 +130,17 @@ function Chat(props) {
           type="text"
           id="message-box"
           placeholder="Type your message here..."
-          onChange={handleChangeInput}
+          value={inputValue}
           onKeyPress={(event) => handleEnterPress(event)}
-          ref={inputMessageRef}
+          onChange={(event) => handleChangeInput(event)}
         />
         <button
           title="Send Message!"
           onClick={(event) => handleSubmitMessage(event)}
-          disabled={!countInputMessage}
+          disabled={!inputValue}
         >
           Send Message
         </button>
-        <button onClick={() => handlePruebas()}></button>
       </div>
     </div>
   )
