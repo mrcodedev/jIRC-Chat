@@ -84,14 +84,13 @@ function Chat(props) {
   const handleChangeInput = () => {
     if (inputMessageRef.current.value.length === 0) {
       buttonSendRef.current.disabled = true
-      return true
+      return
     }
     if (
       inputMessageRef.current.value.length > 0 &&
       buttonSendRef.current.disabled
     ) {
       buttonSendRef.current.disabled = false
-      return false
     }
   }
 
