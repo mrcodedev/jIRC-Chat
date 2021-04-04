@@ -8,6 +8,7 @@ const wss = new WebSocket.Server({ server: SERVER })
 
 wss.on("connection", (ws) => {
   ws.on("open", (data) => {
+    console.log("Server is OPEN")
     console.log(data)
   })
 
@@ -26,8 +27,8 @@ wss.on("connection", (ws) => {
   })
 
   ws.on("close", (data) => {
-    console.log(data)
     console.log("Client has disconnected!")
+    console.log(data)
   })
 })
 
