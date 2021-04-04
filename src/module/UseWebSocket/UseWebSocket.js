@@ -7,7 +7,7 @@ const useWebSocket = ({ url, port, onConnect }) => {
 
   useEffect(() => {
     if (!socket.current) {
-      console.log("Creating connection to Server...")
+      console.info("Creating connection to Server...")
       socket.current = new WebSocket(`ws://${url}:${port}`)
       socket.current.onopen = onConnect
       socket.current.onclose = onClose
@@ -21,7 +21,7 @@ const useWebSocket = ({ url, port, onConnect }) => {
   }, [url, port, disconnect, onConnect])
 
   const onMessage = (event) => {
-    // console.log("Message Received:" + event.data)
+    // console.info("Message Received:" + event.data)
     const data = JSON.parse(event.data)
     switch (data.type) {
       case "say":
@@ -35,13 +35,13 @@ const useWebSocket = ({ url, port, onConnect }) => {
   }
 
   const onClose = () => {
-    console.log("WebSocket is close now ¡O_O!")
+    console.info("WebSocket is close now ¡O_O!")
     socket.current.close()
     setDisconnect(true)
   }
 
   const onError = (event) => {
-    console.log(`Websocket error :(, reason: ${event})`)
+    console.info(`Websocket error :(, reason: ${event})`)
     setDisconnect(true)
   }
 

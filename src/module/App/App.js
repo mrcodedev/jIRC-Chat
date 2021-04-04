@@ -8,6 +8,7 @@ import "./App.scss"
 const App = () => {
   const [isLogged, setIsLogged] = useState(false)
   const [spinner, setSpinner] = useState(false)
+  // TODO: JOIN IN A OBJECT statusError, messageError
   const [statusError, setStatusError] = useState(false)
   const [messageError, setMessageError] = useState("")
   const [loginUserSettingsData, setLoginUserSettingsData] = useState({})

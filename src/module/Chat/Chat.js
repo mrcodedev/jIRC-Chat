@@ -118,7 +118,7 @@ function Chat(props) {
     <div className="container__chat">
       <div className="chat__header">
         <h1>#{channel}</h1>
-        <button onClick={() => handleSubmitClose()}>Server logout</button>
+        <button onClick={handleSubmitClose}>Server logout</button>
       </div>
       <div
         className="chat__messages"
