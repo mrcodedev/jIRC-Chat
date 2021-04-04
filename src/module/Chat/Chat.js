@@ -136,7 +136,7 @@ function Chat(props) {
             if (message.type === "connect") {
               return (
                 <div key={index} className="message">
-                  {`${index}:${message.sender} has connected...`}
+                  {`${message.sender} has connected...`}
                 </div>
               )
             }
@@ -152,7 +152,7 @@ function Chat(props) {
             if (message.type === "disconnect") {
               return (
                 <div key={index} className="message">
-                  {`${message.sender} it has disconnected...`}
+                  {`${message.sender} has disconnected...`}
                 </div>
               )
             }
