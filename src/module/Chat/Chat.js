@@ -42,6 +42,7 @@ function Chat(props) {
     })
     socket.send(sendMessage)
     inputMessageRef.current.value = ""
+    buttonSendRef.current.disabled = true
   }
 
   const { socket, messages, disconnect } = UseWebSocket({
