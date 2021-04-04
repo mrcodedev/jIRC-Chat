@@ -25,7 +25,7 @@ function Chat(props) {
     socket.currentTarget.send(
       JSON.stringify({
         type: "connect",
-        sender: selfNickName,
+        user: selfNickName,
         channel,
         time: timeNow,
       })
@@ -45,7 +45,7 @@ function Chat(props) {
     buttonSendRef.current.disabled = true
   }
 
-  const { socket, messages, disconnect } = UseWebSocket({
+  const { socket, messages, disconnect, connectedUsers } = UseWebSocket({
     url: URL,
     port: PORT,
     onConnect,
@@ -68,7 +68,7 @@ function Chat(props) {
     socket.send(
       JSON.stringify({
         type: "disconnect",
-        sender: selfNickName,
+        user: selfNickName,
         time: timeNow,
       })
     )
@@ -136,7 +136,7 @@ function Chat(props) {
             if (message.type === "connect") {
               return (
                 <div key={index} className="message">
-                  {`${message.sender} has connected...`}
+                  {`${message.user} has connected...`}
                 </div>
               )
             }
@@ -152,7 +152,7 @@ function Chat(props) {
             if (message.type === "disconnect") {
               return (
                 <div key={index} className="message">
-                  {`${message.sender} has disconnected...`}
+                  {`${message.user} has disconnected...`}
                 </div>
               )
             }

@@ -1,70 +1,63 @@
-# Getting Started with Create React App
+# 💬 jIRC-Chat
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![awesome badge](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)
 
-## Available Scripts
+Project in which I want to replicate mIRC or the mythical IRCAP in a simple way. At first I will do it with a connection to my own server and later I want to do it with a connection to an IRC server. This last part, I will mount it in Electron maybe in another repository.
 
-In the project directory, you can run:
+## Run the project
 
-### `yarn start`
+The first thing you have to do is clone the repository locally, and install the dependencies with your favorite dependency manager: yarn or npm.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Config URL and PORT
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+You must change the file `/src/config.env.json` to `/src/config.json` and then inside you can change the port if you need it.
 
-### `yarn test`
+### Server
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+For the chat to work, you have to leave the server running, so dont close it or it wont work for you.
 
-### `yarn build`
+To start the server you must run the following command:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```console
+npm run server:start
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+or
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```console
+yarn server:start
+```
 
-### `yarn eject`
+### Client
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+To run the client made in React, you have to put the following command:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```console
+npm run client:start
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+or
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```console
+yarn cilent:start
+```
 
-## Learn More
+If you have problems with your Mac with A1 chipset, you can run the following command:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```console
+npm run client:m1-start
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+or
 
-### Code Splitting
+```console
+yarn client:m1-start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Support me
 
-### Analyzing the Bundle Size
+If you like what I do and want to help me financially, you can buy me a coffee
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+[![Support me, send me a coffee](https://raw.githubusercontent.com/mrcodedev/frontend-developer-resources/main/images/coffe-share.jpeg)](https://www.buymeacoffee.com/mrcodedev "Buy me a coffee :D")
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+👉☕️ <https://www.buymeacoffee.com/mrcodedev>

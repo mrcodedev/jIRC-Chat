@@ -1,8 +1,8 @@
 const express = require("express")
 const http = require("http")
 const WebSocket = require("ws")
+const { PORT } = require("../src/config.json")
 
-const PORT = 8081
 const SERVER = http.createServer(express)
 const wss = new WebSocket.Server({ server: SERVER })
 
