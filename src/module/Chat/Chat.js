@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-vars */
 import { URL, PORT } from "../../config.json"
-import React, { useEffect, useState, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import UseWebSocket from "../UseWebSocket/UseWebSocket"
 
 import "./Chat.scss"
@@ -9,10 +10,10 @@ function Chat(props) {
   const selfNickName = props.loginUserSettingsData.userSettings.nickName
   const channel = props.loginUserSettingsData.userSettings.channelName
 
-  const scrollChatRef = useRef(null)
-  const inputMessageRef = useRef("")
   const buttonSendRef = useRef(null)
-  const [message, setMessage] = useState([])
+  const inputMessageRef = useRef("")
+  const scrollChatRef = useRef(null)
+  const [doChatScroll, setDoChatScroll] = useState(true)
 
   const time = Date.now()
   const now = new Date(time)
@@ -31,7 +32,6 @@ function Chat(props) {
   }
 
   const sendMessage = () => {
-    console.log("SEND MESSAGE")
     const sendMessage = JSON.stringify({
       type: "say",
       sender: selfNickName,
@@ -40,11 +40,10 @@ function Chat(props) {
       time: timeNow,
     })
     socket.send(sendMessage)
-    setMessage((prev) => [...prev, sendMessage])
     inputMessageRef.current.value = ""
   }
 
-  const { socket, disconnect, messages } = UseWebSocket({
+  const { socket, messages, disconnect } = UseWebSocket({
     url: URL,
     port: PORT,
     onConnect,
@@ -55,12 +54,9 @@ function Chat(props) {
       props.statusDisconnected(true)
     }
 
-    console.log("RENDER :D")
-
     inputMessageRef.current.value = ""
     buttonSendRef.current.disabled = true
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [disconnect, message])
+  }, [disconnect, props, scrollChatRef])
 
   const handleSubmitMessage = () => {
     sendMessage()
@@ -97,43 +93,38 @@ function Chat(props) {
     }
   }
 
-  const checkMessageAutoScroll = () => {
-    console.log("holiiii")
-    // const chatElement = scrollChatRef.current
-    // const scrollToMessage =
-    //   chatElement?.scrollHeight - chatElement?.scrollTop ===
-    //   chatElement?.clientHeight
+  const doScrollMessages = () => {
+    if (doChatScroll) {
+      scrollChatRef.current?.lastElementChild?.scrollIntoView()
+    }
+  }
 
-    // console.log(scrollToMessage ? "Estoy arriba" : "Estoy abajo")
+  const handleCheckScrollBottom = (event) => {
+    event.preventDefault()
+    const bottom =
+      event.target.scrollHeight - event.target.scrollTop ===
+      event.target.clientHeight
+    if (bottom && !doChatScroll) {
+      setDoChatScroll(true)
+    }
 
-    // if (scrollToMessage) {
-    //   console.log("NOOOOOO")
-    //   return false
-    // }
-
-    // if (!scrollToMessage) {
-    //   console.log("HASTA ABAJO")
-    //   scrollChatRef.current?.lastElementChild?.scrollIntoView()
-    //   return true
-    // }
-    // !scrollToMessage ? console.log("hazlo") : console.log("no hagas nada")
-    // const xH = chatElement?.scrollHeight
-    // console.log(window)
-    // chatElement?.scrollTo(0, xH)
-    // scrollChatRef.current?.lastElementChild?.scrollIntoView({
-    //   behavior: "smooth",
-    // })
+    if (!bottom && doChatScroll) {
+      setDoChatScroll(false)
+    }
   }
 
   return (
     <div className="container__chat">
-      {checkMessageAutoScroll()}
-
+      {console.log("RENDER")}
       <div className="chat__header">
         <h1>#{channel}</h1>
         <button onClick={() => handleSubmitClose()}>Server logout</button>
       </div>
-      <div className="chat__messages" ref={scrollChatRef}>
+      <div
+        className="chat__messages"
+        ref={scrollChatRef}
+        onScroll={handleCheckScrollBottom}
+      >
         {messages
           .filter(
             (message) =>
@@ -167,6 +158,7 @@ function Chat(props) {
             }
             return ""
           })}
+        {doScrollMessages()}
       </div>
       <div className="chat__send">
         <input
