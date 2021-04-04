@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { URL, PORT } from "../../config.json"
 import React, { useEffect, useRef, useState } from "react"
-import UseWebSocket from "../UseWebSocket/UseWebSocket"
+import UseWebSocket from "../../services/UseWebSocket/UseWebSocket"
 
 import "./Chat.scss"
 
