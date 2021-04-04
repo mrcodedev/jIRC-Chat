@@ -13,6 +13,7 @@ function Chat(props) {
   const buttonSendRef = useRef(null)
   const inputMessageRef = useRef("")
   const scrollChatRef = useRef(null)
+
   const [doChatScroll, setDoChatScroll] = useState(true)
 
   const time = Date.now()
@@ -115,7 +116,6 @@ function Chat(props) {
 
   return (
     <div className="container__chat">
-      {console.log("RENDER")}
       <div className="chat__header">
         <h1>#{channel}</h1>
         <button onClick={() => handleSubmitClose()}>Server logout</button>
@@ -144,7 +144,7 @@ function Chat(props) {
             if (message.type === "say") {
               return (
                 <div key={index} className="message">
-                  {`${index}:${message.sender}: ${message.message}`}
+                  {`<${message.sender}>: ${message.message}`}
                 </div>
               )
             }

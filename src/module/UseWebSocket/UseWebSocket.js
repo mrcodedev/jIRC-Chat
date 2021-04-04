@@ -21,7 +21,7 @@ const useWebSocket = ({ url, port, onConnect }) => {
   }, [url, port, disconnect, onConnect])
 
   const onMessage = (event) => {
-    console.log("Message Received:" + event.data)
+    // console.log("Message Received:" + event.data)
     const data = JSON.parse(event.data)
     switch (data.type) {
       case "say":
