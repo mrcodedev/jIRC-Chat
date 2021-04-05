@@ -4,6 +4,8 @@
 
 Project in which I want to replicate mIRC or the mythical IRCAP in a simple way. At first I will do it with a connection to my own server and later I want to do it with a connection to an IRC server. This last part, I will mount it in Electron maybe in another repository.
 
+![jirc-gif](https://user-images.githubusercontent.com/22279904/113570823-68b36900-9615-11eb-9c92-ecf6275d0031.gif)
+
 ## Run the project
 
 The first thing you have to do is clone the repository locally, and install the dependencies with your favorite dependency manager: yarn or npm.
